@@ -1,5 +1,5 @@
 <?php
-$basePath = '/competition/';
+$basePath = '/CodeCamp/';
 $request = str_replace($basePath, '', $_SERVER['REQUEST_URI']);
 $request = trim($request, '/');
 //echo $request;

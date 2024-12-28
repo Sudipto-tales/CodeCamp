@@ -1,3 +1,3 @@
 <?php
-$base_url = "http://localhost/competition/"
+$base_url = "http://localhost/CodeCamp/"
 ?>

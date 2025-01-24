@@ -1,18 +1,15 @@
 <?php
-
-// Function to compile and run C code
+// Function to compile and run the C code
 function compileAndRunCCode($code) {
     // Create a unique filename for the C file and executable
     $filename = 'temp_' . uniqid() . '.c';
     $outputExe = 'temp_' . uniqid(); // Output executable file name
-    
+
     // Write the C code to the .c file
     file_put_contents($filename, $code);
 
-    $gccPath = 'C:\\MinGW\\bin\\gcc.exe';
-
     // Command to compile the C code using GCC
-    $compileCommand = "$gccPath $filename -o $outputExe 2>&1"; // Capture errors as well
+    $compileCommand = "gcc $filename -o $outputExe 2>&1"; // Capture errors as well
     $compileOutput = shell_exec($compileCommand);
 
     // Check if there was a compilation error
@@ -22,9 +19,7 @@ function compileAndRunCCode($code) {
     }
 
     // Command to run the compiled C program
-    $runCommand = "./$outputExe 2>&1"; // For Linux
-    // $runCommand = "$outputExe.exe 2>&1"; // For Windows (if using MinGW)
-
+    $runCommand = "./$outputExe 2>&1"; // Capture errors from execution
     $executionOutput = shell_exec($runCommand);
 
     // Remove the temporary C file and executable after execution

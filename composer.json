@@ -1,0 +1,16 @@
+{
+    "name": "yourname/mongodb",
+    "description": "A project using MongoDB with PHP",
+    "type": "project",
+    "require": {
+      "mongodb/mongodb": "^1.20.1"
+    },
+    "autoload": {
+      "psr-4": {
+        "YourNamespace\\": "src/"
+      }
+    },
+    "minimum-stability": "dev",
+    "license": "MIT"
+  }
+  

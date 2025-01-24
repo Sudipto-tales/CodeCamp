@@ -68,6 +68,16 @@
             background: #ccc;
             cursor: not-allowed;
         }
+
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -79,13 +89,16 @@
             A palindrome is a word that reads the same backward as forward.
         </div>
 
-        <textarea id="editor">// Write your code here...</textarea>
+        <textarea id="editor">// Write your C code here...</textarea>
 
         <div class="buttons">
             <button id="clearBtn">Clear</button>
             <button id="runBtn">Run</button>
             <button id="submitBtn">Submit</button>
         </div>
+
+        <!-- Output area -->
+        <div id="output" class="output" style="display:none;"></div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.10/codemirror.min.js"></script>
@@ -101,39 +114,40 @@
         const clearBtn = document.getElementById('clearBtn');
         const runBtn = document.getElementById('runBtn');
         const submitBtn = document.getElementById('submitBtn');
+        const outputDiv = document.getElementById('output'); // Output area
 
+        // Clear the editor content
         clearBtn.addEventListener('click', () => {
             editor.setValue('');
+            outputDiv.style.display = 'none'; // Hide output
         });
 
+        // Handle running the code (this will execute JavaScript for now, not C code)
         runBtn.addEventListener('click', () => {
             try {
                 const userCode = editor.getValue();
                 console.clear();
-                eval(userCode);
+                eval(userCode);  // WARNING: eval() should be avoided for C code execution
             } catch (error) {
                 console.error('Error in your code:', error);
             }
         });
 
-        submitBtn.addEventListener('click', () => {
-            const userCode = editor.getValue();
-            alert('Code submitted:\n' + userCode);
+        // Submit the C code to the backend
+        submitBtn.addEventListener('click', async () => {
+            const userCode = editor.getValue(); // Get the C code from the editor
+            const response = await fetch('compile.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: userCode })  // Send the code as JSON
+            });
+
+            const result = await response.json();  // Receive the result in JSON format
+
+            // Display the result in the output div
+            outputDiv.style.display = 'block';  // Show the output area
+            outputDiv.textContent = result.output || result.error || 'An error occurred';
         });
     </script>
-    <script>
-    submitBtn.addEventListener('click', async () => {
-        const userCode = editor.getValue();
-        const response = await fetch('compile.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code: userCode }),
-        });
-
-        const result = await response.text();
-        alert(result);
-    });
-</script>
-
 </body>
 </html>
